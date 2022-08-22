@@ -63,7 +63,7 @@ struct ufncall
 {
     int nodetype;
     struct ast *l;
-    struct symnol *s;
+    struct symbol *s;
 };
 
 struct flow

@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "calculator.h"
+
+int yylex();
 %}
 
 %union {
@@ -39,7 +41,7 @@ stmt: IF exp THEN list { $$ = newflow('I', $2, $4, NULL); }
 ;
 
 list: { $$ = NULL; }
-    | stmt ';' list { if ($3 == NULL { $$ = $1; }) else { $$ = newast('L', $1, $3); } }
+    | stmt ';' list { if ($3 == NULL) { $$ = $1; } else { $$ = newast('L', $1, $3); } }
 ;
 
 exp: exp CMP exp { $$ = newcmp($2, $1, $3); }
@@ -50,7 +52,7 @@ exp: exp CMP exp { $$ = newcmp($2, $1, $3); }
     | '|' exp { $$ = newast('M', $2, NULL); }
     | '(' exp ')' { $$ = $2; }
     | '-' exp %prec UMINUS { $$ = newast('M', $2, NULL); }
-    | NUMBER { $$ = newnumber($1); }
+    | NUMBER { $$ = newnum($1); }
     | NAME { $$ = newref($1); }
     | NAME '=' exp { $$ = newasgn($1, $3); }
     | FUNC '(' explist ')' { $$ = newfunc($1, $3); }
